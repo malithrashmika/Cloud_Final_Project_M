@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://dvish2003:Vishan2003%23%23%23@cluster0.ijybos0.mongodb.net/inventory_db?appName=Cluster0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always

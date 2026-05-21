@@ -1,0 +1,51 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+            allowedHeaders: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: user-service
+        uri: lb://user-service
+        predicates:
+        - Path=/api/users/**
+      - id: inventory-service
+        uri: lb://inventory-service
+        predicates:
+        - Path=/api/inventory/**
+      - id: borrowing-service
+        uri: lb://borrowing-service
+        predicates:
+        - Path=/api/borrowing/**
+    # Removed nested eureka
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
